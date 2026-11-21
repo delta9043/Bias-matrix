@@ -212,11 +212,11 @@ y_aug = np.concatenate([y_train, y_new])
 
 ### 📂 데이터
 
-| 데이터 · 모델 | 출처 | 배치 |
+| 데이터&nbsp;·&nbsp;모델 | 출처 | 배치 |
 | --- | --- | --- |
-| Bias in Bios | `LabHC/bias_in_bios` (Hugging Face, MIT) | 첫 실행 시 `data/bias_in_bios/`로 자동 내려받기 (학습 257,478건 · dev 39,642건 · 테스트 99,069건) |
-| 임베딩 모델 | `Qwen/Qwen3-0.6B` (Hugging Face, Apache-2.0) | 첫 실행 시 Hugging Face 캐시로 자동 내려받기 |
-| 위해위험 소비자상담 내역 | 공공데이터포털 「공정거래위원회_소비자 민원학습데이터 위해위험 소비자상담 내역 데이터」 (https://www.data.go.kr/data/15098320/fileData.do, 이용허락범위 제한 없음) | 내려받은 CSV를 `data/consumer/hazard_15098320.csv`로 직접 배치 |
+| Bias&nbsp;in&nbsp;Bios | `LabHC/bias_in_bios` (Hugging Face, MIT) | 첫 실행 시 `data/bias_in_bios/`로 자동 내려받기 (학습 257,478건 · dev 39,642건 · 테스트 99,069건) |
+| 임베딩&nbsp;모델 | `Qwen/Qwen3-0.6B` (Hugging Face, Apache-2.0) | 첫 실행 시 Hugging Face 캐시로 자동 내려받기 |
+| 위&#8288;해&#8288;위&#8288;험&nbsp;소&#8288;비&#8288;자&#8288;상&#8288;담&nbsp;내&#8288;역 | [공공데이터포털 「공정거래위원회_소비자 민원학습데이터 위해위험 소비자상담 내역 데이터」](https://www.data.go.kr/data/15098320/fileData.do) (이용허락범위 제한 없음) | 내려받은 CSV를 `data/consumer/hazard_15098320.csv`로 직접 배치 |
 
 - 위해위험 상담 : CP949, 129,759행 중 열 수가 맞지 않는 64행 제외
 - 그룹 : 판매방식코드 10 = 일반 판매, 24 · 27 = 비대면 판매. 코드표를 찾지 못해 24 · 27의 뜻(인터넷 판매, 홈쇼핑 판매)은 상담 본문의 단어로 추정 (24의 36%에 인터넷 · 쇼핑몰 · 온라인, 27의 78%에 홈쇼핑 등장, 10에서는 각각 4%, 0.5%)
@@ -373,7 +373,7 @@ all checks passed
 
 ### 👤 저자
 
-- **Sanghyeok Moon** · Department of Applied Mathematics, Kyung Hee University · [소개 페이지](https://delta9043.github.io/?view=all)
+- **Sanghyeok Moon** · Department of Applied Mathematics, Kyung Hee University
 
 ---
 
