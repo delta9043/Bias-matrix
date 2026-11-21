@@ -1,0 +1,13 @@
+# Python 3.14; versions used for the reported results
+# torch: Intel GPU build ->  pip install torch --index-url https://download.pytorch.org/whl/xpu
+torch==2.15.0
+transformers==5.23.0
+huggingface_hub==2.4.0
+numpy==2.5.5
+scipy==1.18.1
+pandas==3.1.1
+pyarrow==26.0.1
+matplotlib==3.11.2
+# tests only (concept-erasure: reference LEACE implementation; its test is skipped when missing)
+pytest
+concept-erasure==0.2.4

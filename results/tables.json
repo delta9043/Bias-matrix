@@ -1,0 +1,799 @@
+{
+ "table2": {
+  "caption": "Bias in Bios에서의 BME 결과 표. 표의 상단 부분은 임베딩 편집 기법들의 결과이며, 표의 하단 부분은 학습 데이터 교정 기법들의 결과이다. 추가량/N은 원본 데이터 수 대비 증강시킨 데이터 수 비율이다. 소수 그룹과 다수 그룹은 각 클래스에서의 해당 그룹 재현율을 평균한 값이다.",
+  "columns": [
+   "방법",
+   "추가량/N",
+   "정확도 (%)",
+   "보정 GAP [95% 구간]",
+   "소수 그룹 (%)",
+   "다수 그룹 (%)"
+  ],
+  "blocks": {
+   "original": "",
+   "embedding": "임베딩 편집",
+   "data": "학습 데이터 교정"
+  },
+  "rows": [
+   {
+    "label": "Original",
+    "cells": [
+     "--",
+     "81.9",
+     "0.162 [0.141, 0.180]",
+     "65.2",
+     "76.0"
+    ],
+    "block": "original",
+    "ours": false,
+    "values": {
+     "acc": 0.8188838082548526,
+     "gap_rms_bc": 0.16198154785582922,
+     "gap_rms_ci": [
+      0.14058088088171242,
+      0.18007234158764596
+     ],
+     "tpr_minority": 0.6523748959390279,
+     "tpr_majority": 0.7603112391222655
+    }
+   },
+   {
+    "label": "Data matrix X (k=28)",
+    "cells": [
+     "--",
+     "67.4",
+     "0.150 [0.127, 0.168]",
+     "57.2",
+     "66.2"
+    ],
+    "block": "embedding",
+    "ours": false,
+    "values": {
+     "acc": 0.6735406635779103,
+     "gap_rms_bc": 0.1500630990430965,
+     "gap_rms_ci": [
+      0.12682267571037947,
+      0.16780036430292833
+     ],
+     "tpr_minority": 0.5721462195269061,
+     "tpr_majority": 0.6622652837743465
+    }
+   },
+   {
+    "label": "LEACE",
+    "cells": [
+     "--",
+     "81.8",
+     "0.130 [0.109, 0.148]",
+     "67.5",
+     "75.3"
+    ],
+    "block": "embedding",
+    "ours": false,
+    "values": {
+     "acc": 0.8181974179612189,
+     "gap_rms_bc": 0.13049328286695744,
+     "gap_rms_ci": [
+      0.10861572088531977,
+      0.14755252291950016
+     ],
+     "tpr_minority": 0.675255832031776,
+     "tpr_majority": 0.7533438360941827
+    }
+   },
+   {
+    "label": "INLP (32회)",
+    "cells": [
+     "--",
+     "81.8",
+     "0.120 [0.096, 0.137]",
+     "68.0",
+     "75.1"
+    ],
+    "block": "embedding",
+    "ours": false,
+    "values": {
+     "acc": 0.818439673358972,
+     "gap_rms_bc": 0.12039546971311435,
+     "gap_rms_ci": [
+      0.09612625515272452,
+      0.13700069273096943
+     ],
+     "tpr_minority": 0.6801077830614,
+     "tpr_majority": 0.7513473905593093
+    }
+   },
+   {
+    "label": "INLP (직업 보정, 128회)",
+    "cells": [
+     "--",
+     "81.7",
+     "0.109 [0.084, 0.125]",
+     "68.6",
+     "74.7"
+    ],
+    "block": "embedding",
+    "ours": false,
+    "values": {
+     "acc": 0.8167640735245132,
+     "gap_rms_bc": 0.10881282257812376,
+     "gap_rms_ci": [
+      0.08442292816340448,
+      0.12476676912454879
+     ],
+     "tpr_minority": 0.6863055265528779,
+     "tpr_majority": 0.7468108950144697
+    }
+   },
+   {
+    "label": "BME (Ours, soft λ=0.25)",
+    "cells": [
+     "--",
+     "81.7",
+     "0.129 [0.108, 0.145]",
+     "67.2",
+     "75.3"
+    ],
+    "block": "embedding",
+    "ours": true,
+    "values": {
+     "acc": 0.8170467048218918,
+     "gap_rms_bc": 0.12931076251877238,
+     "gap_rms_ci": [
+      0.10837551986307706,
+      0.14473921796355818
+     ],
+     "tpr_minority": 0.6719767077828145,
+     "tpr_majority": 0.7526219668931206
+    }
+   },
+   {
+    "label": "BME (Ours, 직교)",
+    "cells": [
+     "--",
+     "81.2",
+     "0.080 [0.048, 0.098]",
+     "69.6",
+     "73.5"
+    ],
+    "block": "embedding",
+    "ours": true,
+    "values": {
+     "acc": 0.8121208450675792,
+     "gap_rms_bc": 0.08005300136643906,
+     "gap_rms_ci": [
+      0.04769439345399247,
+      0.09781661100494571
+     ],
+     "tpr_minority": 0.6955511936277293,
+     "tpr_majority": 0.7349108703434137
+    }
+   },
+   {
+    "label": "BME (Ours)",
+    "cells": [
+     "--",
+     "81.2",
+     "0.075 [0.045, 0.091]",
+     "69.9",
+     "73.5"
+    ],
+    "block": "embedding",
+    "ours": true,
+    "values": {
+     "acc": 0.8119088715945452,
+     "gap_rms_bc": 0.07466924497527451,
+     "gap_rms_ci": [
+      0.04453099626209836,
+      0.09144095355072991
+     ],
+     "tpr_minority": 0.6989549448784681,
+     "tpr_majority": 0.735042651399486
+    }
+   },
+   {
+    "label": "BME (Ours, 모델 고정)",
+    "cells": [
+     "--",
+     "80.1",
+     "0.062 [0.028, 0.080]",
+     "67.7",
+     "69.6"
+    ],
+    "block": "embedding",
+    "ours": true,
+    "values": {
+     "acc": 0.800512773925244,
+     "gap_rms_bc": 0.0617964143147042,
+     "gap_rms_ci": [
+      0.027504197943707707,
+      0.079513221953652
+     ],
+     "tpr_minority": 0.6769873622193726,
+     "tpr_majority": 0.6962381431174961
+    }
+   },
+   {
+    "label": "Reweighing",
+    "cells": [
+     "+0.000",
+     "81.4",
+     "0.069 [0.037, 0.086]",
+     "70.9",
+     "73.1"
+    ],
+    "block": "data",
+    "ours": false,
+    "values": {
+     "acc": 0.8137560690024125,
+     "gap_rms_bc": 0.06905190790151881,
+     "gap_rms_ci": [
+      0.03654926301741753,
+      0.0856713290561248
+     ],
+     "tpr_minority": 0.7087720278627784,
+     "tpr_majority": 0.7309983066351916
+    }
+   },
+   {
+    "label": "CDA (all)",
+    "cells": [
+     "+1.000",
+     "81.8",
+     "0.113 [0.089, 0.129]",
+     "68.5",
+     "75.0"
+    ],
+    "block": "data",
+    "ours": false,
+    "values": {
+     "acc": 0.8177734710151511,
+     "gap_rms_bc": 0.11338350977688798,
+     "gap_rms_ci": [
+      0.0889058428477821,
+      0.12938335351193278
+     ],
+     "tpr_minority": 0.6849363315534696,
+     "tpr_majority": 0.7499015433964816
+    }
+   },
+   {
+    "label": "CDA (partial)",
+    "cells": [
+     "+0.224",
+     "81.5",
+     "0.103 [0.080, 0.118]",
+     "70.1",
+     "75.6"
+    ],
+    "block": "data",
+    "ours": false,
+    "values": {
+     "acc": 0.8151288495896799,
+     "gap_rms_bc": 0.10255298725878793,
+     "gap_rms_ci": [
+      0.07967200465081975,
+      0.1180618385108531
+     ],
+     "tpr_minority": 0.7012540604255842,
+     "tpr_majority": 0.75612002010956
+    }
+   },
+   {
+    "label": "BMA (Ours)",
+    "cells": [
+     "+0.224",
+     "81.2",
+     "0.075 [0.045, 0.091]",
+     "72.0",
+     "74.5"
+    ],
+    "block": "data",
+    "ours": true,
+    "values": {
+     "acc": 0.8124741341893024,
+     "gap_rms_bc": 0.0748059976310716,
+     "gap_rms_ci": [
+      0.04544845303635142,
+      0.09076852954415104
+     ],
+     "tpr_minority": 0.7197043163961506,
+     "tpr_majority": 0.7454713496064906
+    }
+   }
+  ]
+ },
+ "table3": {
+  "caption": "위해위험 소비자상담 내역 데이터 적용 결과. 표의 상단은 이진 그룹의 경우이며, 표의 하단은 다중 그룹인 경우의 결과이다.",
+  "columns": [
+   "방법",
+   "정확도 (%)",
+   "보정 GAP [95% 구간]",
+   "소수 그룹 (%)",
+   "다수 그룹 (%)"
+  ],
+  "blocks": {
+   "binary": "판매방식 2개 그룹 (일반, 비대면), 품목 15종",
+   "multi": "판매방식 3개 그룹 (일반, 인터넷, 홈쇼핑), 품목 6종"
+  },
+  "rows": [
+   {
+    "label": "원본",
+    "cells": [
+     "86.3",
+     "0.205 [0.168, 0.233]",
+     "65.7",
+     "79.0"
+    ],
+    "block": "binary",
+    "ours": false,
+    "values": {
+     "acc": 0.8627994835254172,
+     "gap_rms_bc": 0.205270694899951,
+     "gap_rms_ci": [
+      0.16760903552270162,
+      0.23346531187500114
+     ],
+     "tpr_minority": 0.656660463263382,
+     "tpr_majority": 0.789774805568019
+    }
+   },
+   {
+    "label": "BME (재학습)",
+    "cells": [
+     "83.9",
+     "0.146 [0.103, 0.172]",
+     "66.4",
+     "75.8"
+    ],
+    "block": "binary",
+    "ours": true,
+    "values": {
+     "acc": 0.8389842666539142,
+     "gap_rms_bc": 0.14616328171189602,
+     "gap_rms_ci": [
+      0.10325171632955057,
+      0.1716537734506072
+     ],
+     "tpr_minority": 0.6635080447846631,
+     "tpr_majority": 0.7575784818340477
+    }
+   },
+   {
+    "label": "BME (모델 고정)",
+    "cells": [
+     "81.8",
+     "0.110 [0.070, 0.132]",
+     "65.8",
+     "72.4"
+    ],
+    "block": "binary",
+    "ours": true,
+    "values": {
+     "acc": 0.8177514226961886,
+     "gap_rms_bc": 0.10996383439298488,
+     "gap_rms_ci": [
+      0.069531912699063,
+      0.13200568368408055
+     ],
+     "tpr_minority": 0.6577362172693282,
+     "tpr_majority": 0.723880010786199
+    }
+   },
+   {
+    "label": "reweighing",
+    "cells": [
+     "85.9",
+     "0.179 [0.135, 0.208]",
+     "66.0",
+     "78.7"
+    ],
+    "block": "binary",
+    "ours": false,
+    "values": {
+     "acc": 0.8590215675960021,
+     "gap_rms_bc": 0.17922347112589135,
+     "gap_rms_ci": [
+      0.13499053895682955,
+      0.2075198736813287
+     ],
+     "tpr_minority": 0.6598991435896998,
+     "tpr_majority": 0.7870697788578428
+    }
+   },
+   {
+    "label": "BMA",
+    "cells": [
+     "85.8",
+     "0.180 [0.137, 0.207]",
+     "66.9",
+     "78.6"
+    ],
+    "block": "binary",
+    "ours": true,
+    "values": {
+     "acc": 0.8576825594184879,
+     "gap_rms_bc": 0.18024263245138464,
+     "gap_rms_ci": [
+      0.13699308921559677,
+      0.20654583570578783
+     ],
+     "tpr_minority": 0.6692406832280299,
+     "tpr_majority": 0.7863080651044076
+    }
+   },
+   {
+    "label": "원본",
+    "cells": [
+     "91.2",
+     "0.144 [0.103, 0.169]",
+     "82.9",
+     "91.7"
+    ],
+    "block": "multi",
+    "ours": false,
+    "values": {
+     "acc": 0.9120101137800253,
+     "gap_rms_bc": 0.14384780141942993,
+     "gap_rms_ci": [
+      0.10324531184764758,
+      0.16912059441962676
+     ],
+     "tpr_minority": 0.8289373155364572,
+     "tpr_majority": 0.9174595593116238
+    }
+   },
+   {
+    "label": "BME (재학습)",
+    "cells": [
+     "90.0",
+     "0.111 [0.073, 0.136]",
+     "84.1",
+     "89.9"
+    ],
+    "block": "multi",
+    "ours": true,
+    "values": {
+     "acc": 0.900126422250316,
+     "gap_rms_bc": 0.11090629139191864,
+     "gap_rms_ci": [
+      0.07259557962435512,
+      0.1358414273552121
+     ],
+     "tpr_minority": 0.8414108207370732,
+     "tpr_majority": 0.8986860373562301
+    }
+   },
+   {
+    "label": "BME (모델 고정)",
+    "cells": [
+     "88.9",
+     "0.085 [0.027, 0.110]",
+     "83.3",
+     "88.4"
+    ],
+    "block": "multi",
+    "ours": true,
+    "values": {
+     "acc": 0.8893383902233459,
+     "gap_rms_bc": 0.08462127419522639,
+     "gap_rms_ci": [
+      0.026991224736841762,
+      0.11014773965733533
+     ],
+     "tpr_minority": 0.8332407143274163,
+     "tpr_majority": 0.8841408931026393
+    }
+   },
+   {
+    "label": "reweighing",
+    "cells": [
+     "91.1",
+     "0.118 [0.076, 0.144]",
+     "82.9",
+     "91.8"
+    ],
+    "block": "multi",
+    "ours": false,
+    "values": {
+     "acc": 0.9114201432785504,
+     "gap_rms_bc": 0.11849035033494558,
+     "gap_rms_ci": [
+      0.0760784779298462,
+      0.144109123944616
+     ],
+     "tpr_minority": 0.8287687853693452,
+     "tpr_majority": 0.9176146527054675
+    }
+   },
+   {
+    "label": "BMA",
+    "cells": [
+     "90.9",
+     "0.110 [0.069, 0.136]",
+     "82.8",
+     "91.4"
+    ],
+    "block": "multi",
+    "ours": true,
+    "values": {
+     "acc": 0.9092288242730721,
+     "gap_rms_bc": 0.11030321450765466,
+     "gap_rms_ci": [
+      0.06887926712281302,
+      0.13643745404637952
+     ],
+     "tpr_minority": 0.8276324698655239,
+     "tpr_majority": 0.9137263062030246
+    }
+   }
+  ]
+ },
+ "numbers": {
+  "bios.bme.acc_drop": {
+   "value": "0.7",
+   "unit": "%p",
+   "text": "Bias in Bios, BME (재학습): 정확도 손실"
+  },
+  "bios.bme.gap_reduction": {
+   "value": "54",
+   "unit": "%",
+   "text": "Bias in Bios, BME (재학습): 보정 GAP 감소율"
+  },
+  "bios.bme.gap": {
+   "value": "0.075",
+   "unit": "",
+   "text": "Bias in Bios, BME (사교 편집, 재학습): 보정 GAP"
+  },
+  "bios.bme_orth.gap": {
+   "value": "0.080",
+   "unit": "",
+   "text": "Bias in Bios, BME (직교 편집, 재학습): 보정 GAP"
+  },
+  "bios.bme_orth.frozen_acc": {
+   "value": "65.5",
+   "unit": "%",
+   "text": "Bias in Bios, BME (직교 편집, 모델 고정): 정확도"
+  },
+  "bios.bme_soft.gap": {
+   "value": "0.129",
+   "unit": "",
+   "text": "Bias in Bios, BME (soft editing λ=0.25, 재학습): 보정 GAP"
+  },
+  "bios.bme_frozen.acc": {
+   "value": "80.1",
+   "unit": "%",
+   "text": "Bias in Bios, BME (모델 고정): 정확도"
+  },
+  "bios.bme_frozen.acc_drop": {
+   "value": "1.8",
+   "unit": "%p",
+   "text": "Bias in Bios, BME (모델 고정): 정확도 손실"
+  },
+  "bios.bme_frozen.gap_reduction": {
+   "value": "62",
+   "unit": "%",
+   "text": "Bias in Bios, BME (모델 고정): 보정 GAP 감소율"
+  },
+  "bios.x_top28.acc_drop": {
+   "value": "14.5",
+   "unit": "%p",
+   "text": "Bias in Bios, 데이터 행렬 X의 상위 28개 제거: 정확도 손실"
+  },
+  "bios.x_top28.gap": {
+   "value": "0.150",
+   "unit": "",
+   "text": "Bias in Bios, 데이터 행렬 X의 상위 28개 제거: 보정 GAP"
+  },
+  "bios.k_selected": {
+   "value": "22",
+   "unit": "개",
+   "text": "Bias in Bios, 순차 순열검정이 선택한 방향의 수 (28개 중)"
+  },
+  "bios.bias_share": {
+   "value": "1.09",
+   "unit": "%",
+   "text": "Bias in Bios, 임베딩 분산 가운데 클래스 안의 그룹 차이가 차지하는 비율"
+  },
+  "bios.bma.added": {
+   "value": "0.224",
+   "unit": "N",
+   "text": "Bias in Bios, BMA: 추가한 표본의 양 (원본 대비)"
+  },
+  "bios.bma.acc_drop": {
+   "value": "0.6",
+   "unit": "%p",
+   "text": "Bias in Bios, BMA: 정확도 손실"
+  },
+  "bios.bma.gap_reduction": {
+   "value": "54",
+   "unit": "%",
+   "text": "Bias in Bios, BMA: 보정 GAP 감소율"
+  },
+  "bios.cda.gap_reduction": {
+   "value": "30",
+   "unit": "%",
+   "text": "Bias in Bios, CDA (all): 보정 GAP 감소율"
+  },
+  "dose.bios.none.a0.gap": {
+   "value": "0.090",
+   "unit": "",
+   "text": "Bias in Bios, 편향 강도 α=0, 원본 모델: 보정 GAP"
+  },
+  "dose.bios.none.a1.gap": {
+   "value": "0.179",
+   "unit": "",
+   "text": "Bias in Bios, 편향 강도 α=1, 원본 모델: 보정 GAP"
+  },
+  "dose.bios.leace.a1.gap": {
+   "value": "0.150",
+   "unit": "",
+   "text": "Bias in Bios, 편향 강도 α=1, LEACE: 보정 GAP"
+  },
+  "dose.bios.inlp.a1.gap": {
+   "value": "0.140",
+   "unit": "",
+   "text": "Bias in Bios, 편향 강도 α=1, INLP: 보정 GAP"
+  },
+  "dose.bios.bme.a1.gap": {
+   "value": "0.086",
+   "unit": "",
+   "text": "Bias in Bios, 편향 강도 α=1, BME: 보정 GAP"
+  },
+  "dose.bios.bma.a1.gap": {
+   "value": "0.107",
+   "unit": "",
+   "text": "Bias in Bios, 편향 강도 α=1, BMA: 보정 GAP"
+  },
+  "dose.bios.bma.removed": {
+   "value": "80",
+   "unit": "%",
+   "text": "Bias in Bios, BMA: 데이터의 의존 때문에 늘어난 보정 GAP 가운데 줄인 비율"
+  },
+  "dose.hazard.none.a0.gap": {
+   "value": "0.173",
+   "unit": "",
+   "text": "위해위험 상담, 편향 강도 α=0, 원본 모델: 보정 GAP"
+  },
+  "dose.hazard.none.a1.gap": {
+   "value": "0.206",
+   "unit": "",
+   "text": "위해위험 상담, 편향 강도 α=1, 원본 모델: 보정 GAP"
+  },
+  "dose.hazard.leace.a1.gap": {
+   "value": "0.200",
+   "unit": "",
+   "text": "위해위험 상담, 편향 강도 α=1, LEACE: 보정 GAP"
+  },
+  "dose.hazard.inlp.a1.gap": {
+   "value": "0.207",
+   "unit": "",
+   "text": "위해위험 상담, 편향 강도 α=1, INLP: 보정 GAP"
+  },
+  "dose.hazard.bme.a1.gap": {
+   "value": "0.135",
+   "unit": "",
+   "text": "위해위험 상담, 편향 강도 α=1, BME: 보정 GAP"
+  },
+  "dose.hazard.bma.a1.gap": {
+   "value": "0.177",
+   "unit": "",
+   "text": "위해위험 상담, 편향 강도 α=1, BMA: 보정 GAP"
+  },
+  "dose.hazard.bma.removed": {
+   "value": "88",
+   "unit": "%",
+   "text": "위해위험 상담, BMA: 데이터의 의존 때문에 늘어난 보정 GAP 가운데 줄인 비율"
+  },
+  "dose.bios.none.a0.tpr_minority": {
+   "value": "65.8",
+   "unit": "%",
+   "text": "Bias in Bios, 편향 강도 α=0, 원본 모델: 소수 그룹 재현율"
+  },
+  "dose.bios.none.a1.tpr_minority": {
+   "value": "59.4",
+   "unit": "%",
+   "text": "Bias in Bios, 편향 강도 α=1, 원본 모델: 소수 그룹 재현율"
+  },
+  "hazard.n": {
+   "value": "104,552",
+   "unit": "건",
+   "text": "위해위험 상담: 실험에 쓴 상담 건수 (학습 + 테스트)"
+  },
+  "hazard.n_classes": {
+   "value": "15",
+   "unit": "종",
+   "text": "위해위험 상담: 품목 대분류의 수"
+  },
+  "hazard.remote_share": {
+   "value": "18.8",
+   "unit": "%",
+   "text": "위해위험 상담: 비대면 판매의 비율 (전체)"
+  },
+  "hazard.remote_share_min": {
+   "value": "5",
+   "unit": "%",
+   "text": "위해위험 상담: 품목별 비대면 판매 비율의 최솟값"
+  },
+  "hazard.remote_share_max": {
+   "value": "40",
+   "unit": "%",
+   "text": "위해위험 상담: 품목별 비대면 판매 비율의 최댓값"
+  },
+  "hazard.bias_share": {
+   "value": "1.15",
+   "unit": "%",
+   "text": "위해위험 상담: 임베딩 분산 가운데 클래스 안의 그룹 차이가 차지하는 비율"
+  },
+  "hazard.none.gap": {
+   "value": "0.205",
+   "unit": "",
+   "text": "위해위험 상담, 원본 모델: 보정 GAP"
+  },
+  "hazard.none.tpr_minority": {
+   "value": "65.7",
+   "unit": "%",
+   "text": "위해위험 상담, 원본 모델: 비대면 판매 상담의 재현율"
+  },
+  "hazard.none.tpr_majority": {
+   "value": "79.0",
+   "unit": "%",
+   "text": "위해위험 상담, 원본 모델: 일반 판매 상담의 재현율"
+  },
+  "hazard.bme.gap_reduction": {
+   "value": "29",
+   "unit": "%",
+   "text": "위해위험 상담, BME (재학습): 보정 GAP 감소율"
+  },
+  "hazard.bme_frozen.gap_reduction": {
+   "value": "46",
+   "unit": "%",
+   "text": "위해위험 상담, BME (모델 고정): 보정 GAP 감소율"
+  },
+  "hazard.bma.acc_drop": {
+   "value": "0.5",
+   "unit": "%p",
+   "text": "위해위험 상담, BMA: 정확도 손실"
+  },
+  "hazard.bma.gap_reduction": {
+   "value": "12",
+   "unit": "%",
+   "text": "위해위험 상담, BMA: 보정 GAP 감소율"
+  },
+  "hazard.bma.tpr_minority_gain": {
+   "value": "+1.3",
+   "unit": "%p",
+   "text": "위해위험 상담, BMA: 비대면 판매 상담의 재현율 변화"
+  },
+  "hazard.rare.none": {
+   "value": "66.3",
+   "unit": "%",
+   "text": "위해위험 상담, 비대면 판매가 드문 품목(학습 데이터에서 10% 미만), 원본 모델: 비대면 판매 상담의 재현율"
+  },
+  "hazard.rare.bme": {
+   "value": "72.5",
+   "unit": "%",
+   "text": "위해위험 상담, 비대면 판매가 드문 품목, BME (재학습): 비대면 판매 상담의 재현율"
+  },
+  "hazard.rare.bma": {
+   "value": "72.2",
+   "unit": "%",
+   "text": "위해위험 상담, 비대면 판매가 드문 품목, BMA: 비대면 판매 상담의 재현율"
+  },
+  "multigroup.none.gap": {
+   "value": "0.144",
+   "unit": "",
+   "text": "위해위험 상담 (3개 그룹), 원본 모델: 보정 GAP"
+  },
+  "multigroup.bme.gap": {
+   "value": "0.111",
+   "unit": "",
+   "text": "위해위험 상담 (3개 그룹), BME (재학습): 보정 GAP"
+  },
+  "multigroup.bma.gap": {
+   "value": "0.110",
+   "unit": "",
+   "text": "위해위험 상담 (3개 그룹), BMA: 보정 GAP"
+  }
+ }
+}

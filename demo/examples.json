@@ -1,0 +1,19 @@
+{
+  "note": "Fictional biographies written for the demo (no real person). The text is the female version; the male version is produced by the rule-based gender swap of the CDA baseline. label: intended occupation, or null for a deliberately ambiguous text.",
+  "examples": [
+    {"id": "surgeon-1", "label": "surgeon", "text": "She completed her general surgery residency at a university medical center and a fellowship in minimally invasive surgery. She performs laparoscopic procedures for hernia repair and gallbladder disease, and she operates at two regional hospitals."},
+    {"id": "surgeon-2", "label": "surgeon", "text": "She has spent the last twelve years in the operating room, caring for patients with breast cancer. Her practice focuses on helping each patient understand the options before and after an operation."},
+    {"id": "nurse-1", "label": "nurse", "text": "She earned her bachelor of science in nursing and has worked on a medical-surgical unit for eight years. She is certified in critical care and enjoys teaching new graduates on the floor."},
+    {"id": "nurse-2", "label": "nurse", "text": "She works night shifts in the emergency department of a community hospital, where she triages patients, starts IV lines and supports families. She is studying for an advanced certification."},
+    {"id": "physician-1", "label": "physician", "text": "She graduated from medical school in 2004 and completed her residency in internal medicine. She sees adult patients for diabetes, hypertension and preventive care, and she is affiliated with the county medical center."},
+    {"id": "physician-2", "label": "physician", "text": "She is board certified in family medicine and has practiced in a rural clinic for fifteen years. She cares for patients of all ages and has a special interest in sports medicine."},
+    {"id": "dentist-1", "label": "dentist", "text": "She received her doctor of dental surgery degree in 2009 and opened a family practice two years later. She provides cleanings, fillings, crowns and cosmetic treatments, and she is a member of the state dental association."},
+    {"id": "dietitian-1", "label": "dietitian", "text": "She is registered with the state board and holds a master's degree in nutrition. She counsels clients on weight management, diabetes and heart-healthy eating, and she develops meal plans for a hospital wellness program."},
+    {"id": "chiropractor-1", "label": "chiropractor", "text": "She graduated from a college of chiropractic in 2011. She treats back pain, neck pain and sports injuries with spinal adjustments and rehabilitation exercises at her clinic."},
+    {"id": "psychologist-1", "label": "psychologist", "text": "She holds a doctorate in clinical psychology and is licensed in two states. She provides therapy for anxiety, depression and trauma, and she conducts assessments for children and adults."},
+    {"id": "ambiguous-1", "label": null, "text": "She has worked at the university hospital for ten years and spends most of her days in the operating room. She is known for staying calm under pressure and for the care she gives patients before and after surgery."},
+    {"id": "ambiguous-2", "label": null, "text": "She works with patients recovering from heart surgery and coordinates their care with the rest of the clinical team. She also mentors students during their hospital rotations."},
+    {"id": "ambiguous-3", "label": null, "text": "She helps patients manage chronic conditions through lifestyle changes and regular follow-up visits. She has a particular interest in nutrition and preventive care."},
+    {"id": "ambiguous-4", "label": null, "text": "She joined the clinic in 2015 after finishing her training. She treats patients with chronic pain and works closely with physical therapists."}
+  ]
+}

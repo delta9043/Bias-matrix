@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bias-Matrix Editing and Augmentation</title>
+<meta name="description" content="조건부 편향 행렬 하나로 임베딩 편집(BME)과 학습 데이터 증강(BMA)을 수행하는 편향 제거 방법. 방법 설명과 브라우저에서 직접 해 보는 데모.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Bias-Matrix Editing and Augmentation">
+<meta property="og:description" content="조건부 편향 행렬 하나로 임베딩 편집(BME)과 학습 데이터 증강(BMA)을 수행하는 편향 제거 방법. 브라우저에서 직접 해 보는 데모 포함.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<link rel="stylesheet" href="assets/style.css?v=42023">
+</head>
+<body>
+<a class="skip-link" href="#main">본문으로 건너뛰기</a>
+
+<header class="site-header">
+  <nav class="nav container" aria-label="페이지 내 이동">
+    <a class="brand" href="#top">BME<span>/</span>BMA</a>
+    <div class="nav-links">
+      <a href="#abstract">초록</a>
+      <a href="#method">방법</a>
+      <a href="#demo">데모</a>
+      <a href="#results">결과</a>
+      <a href="#code">코드</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+
+<!-- Title Block -->
+<section class="hero container" id="top">
+  <h1>Bias-Matrix Editing and Augmentation<span class="subtitle">Debiasing from Embeddings to Training Data</span></h1>
+  <p class="authors"><span class="author"><a href="https://delta9043.github.io/?view=all" rel="noopener">Sanghyeok Moon</a></span><span class="affil">Department of Applied Mathematics, Kyung Hee University</span></p>
+  <div class="links">
+    <a class="button primary" href="#demo">Demo</a>
+    <a class="button" href="https://github.com/delta9043" rel="noopener">Code (Github)</a>
+    <a class="button" href="#results">Results</a>
+  </div>
+</section>
+
+<!-- Abstract -->
+<section class="band" id="abstract" aria-labelledby="abstract-title">
+  <div class="reading">
+    <p class="kicker">Abstract</p>
+    <h2 id="abstract-title">초록</h2>
+    <p>대규모 데이터를 모델에 학습시키거나 LLM 임베딩으로 바꾸어 신경망으로 분석하면 데이터의 편향이 결과에 그대로 반영되게 된다. 기존 대부분의 데이터 분석은 해당 편향을 간과하거나, LLM으로 증강한 비편향 데이터로 학습하여 데이터의 편향 문제를 해결하고자 한다. 하지만 LLM의 블랙박스 성질 때문에 비편향 데이터가 실제로 정당하게 합성되었는지는 의문이 남는다. 본 논문은 스펙트럼 편집을 통한 편향 제거 방법인 편향 행렬 편집법(Bias-Matrix Editing, BME)과, 이를 활용한 데이터 증강법인 편향 행렬 증강법(Bias-Matrix Augmentation, BMA)을 제안한다. 편향은 데이터 행렬 \(X\) 대신 편향이 존재하는 것으로 의심되는 성분만 모은 조건부 편향 행렬 \(B\)의 일부 특이값을 0으로 만들어 제거한다. 구체적으로 데이터의 특징별로 임베딩의 평균을 구하고, 편향이 발생한 특징들이 해당 그룹 안의 평균과의 차이를 열로 쌓아 \(B\)를 만든 뒤, \(B\)를 SVD하여 얻은 특이방향의 성분을 임베딩에서 사영으로 지운다. 이 방법을 Bias in Bios 약력 39.6만 건에 적용한 결과 정확도 손실 <span data-v="bios.bme.acc_drop">0.7</span>%p를 기록하면서 성별 간 재현율 격차가 <span data-v="bios.bme.gap_reduction">54</span>% 줄었으며, 각 직업의 소수 성별 재현율을 약 5%p 올렸다. 또한 같은 편향 행렬을 활용하여 데이터 증강법 BMA를 만들었다. BMA는 \(B\)의 편향 평균 차이만큼 임베딩을 옮긴 복사본을 데이터 특징들이 독립이 되기 위한 필요한 최소한의 칸에만 더한다. BMA를 쓰면 반사실 증강(CDA)의 <span data-v="bios.bma.added">0.224</span>배 분량의 데이터와 정확도 손실 <span data-v="bios.bma.acc_drop">0.6</span>%p로 그룹 간의 편향 격차가 CDA의 <span data-v="bios.cda.gap_reduction">30</span>%보다 높은 <span data-v="bios.bma.gap_reduction">54</span>% 줄어든다. 또한 BME는 이미 학습된 모델에도 재학습 없이 적용할 수 있으며, 이때 정확도 손실 <span data-v="bios.bme_frozen.acc_drop">1.8</span>%p로 편향 격차가 <span data-v="bios.bme_frozen.gap_reduction">62</span>% 줄어든다.</p>
+  </div>
+</section>
+
+<!-- Method -->
+<section class="section container" id="method" aria-labelledby="method-title">
+  <div class="section-head">
+    <p class="kicker">Method</p>
+    <h2 id="method-title">방법</h2>
+  </div>
+
+  <figure class="figure live" id="fig1">
+    <div class="player" id="method-player">
+      <div class="player-bar">
+        <div class="segmented" role="radiogroup" aria-label="보여 줄 과정" id="player-mode">
+          <button type="button" role="radio" aria-checked="true" data-value="B">B</button>
+          <button type="button" role="radio" aria-checked="false" data-value="BME">BME</button>
+          <button type="button" role="radio" aria-checked="false" data-value="BMA">BMA</button>
+        </div>
+        <div class="player-controls">
+          <button type="button" class="icon-button" id="player-play" aria-label="재생" title="재생"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12-7.5z" fill="currentColor"/></svg></button>
+          <button type="button" class="icon-button" id="player-pause" aria-label="일시정지" title="일시정지"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h4v15h-4zM13.5 4.5h4v15h-4z" fill="currentColor"/></svg></button>
+          <button type="button" class="icon-button" id="player-fast" aria-label="2배 속도" title="2배 속도"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5v14l9-7zM12 5v14l9-7z" fill="currentColor"/></svg></button>
+          <button type="button" class="icon-button" id="player-restart" aria-label="처음부터 다시" title="처음부터 다시"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5a7.5 7.5 0 1 0 7.2 5.4" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/><path d="M11.5 1.2v7.6l5.2-3.8z" fill="currentColor"/></svg></button>
+        </div>
+      </div>
+      <ol class="player-steps" id="player-steps" aria-label="단계"></ol>
+      <div class="player-progress" aria-hidden="true"><i id="player-progress"></i></div>
+      <div class="player-main">
+        <div class="player-stage" id="player-stage"></div>
+        <div class="player-side">
+          <div class="player-caption">
+            <p class="player-title" id="player-title"></p>
+            <p class="player-text" id="player-text"></p>
+          </div>
+          <p class="player-gap" id="player-gap"></p>
+          <ul class="legend" aria-label="범례">
+        <li><span class="swatch shape circle"></span>class A <span class="swatch shape square"></span>class B</li>
+        <li><span class="swatch dot g0"></span>group 0</li>
+        <li><span class="swatch dot g1"></span>group 1</li>
+        <li><span class="swatch dot hollow"></span>added copy</li>
+        <li><span class="swatch line dashed"></span>decision boundary</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </figure>
+</section>
+
+<!-- Demo -->
+<section class="band" id="demo" aria-labelledby="demo-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">Demo</p>
+      <h2 id="demo-title">데모</h2>
+    </div>
+
+    <!-- Demo 1: 2-D toy -->
+    <article class="demo" id="demo-toy">
+      <header class="demo-head">
+        <h3><span class="demo-no">Demo 1</span>2D example</h3>
+        <p>클래스 2개 (A, B), 그룹 2개 (0, 1) 데이터 예시. 편향 강도가 높아질수록 class A에는 group 1이, class B에는 group 0이 많아진다.<br>목표 : 클래스 기준으로 결정 경계 생성하기</p>
+      </header>
+      <div class="demo-body">
+        <div class="stage">
+          <svg id="toy-svg" viewBox="0 0 560 440" role="img" aria-label="2차원 합성 데이터의 산점도와 모델의 결정 경계"></svg>
+          <ul class="legend" aria-label="범례">
+            <li><span class="swatch shape circle"></span>class A <span class="swatch shape square"></span>class B</li>
+            <li><span class="swatch dot g0"></span>group 0</li>
+            <li><span class="swatch dot g1"></span>group 1</li>
+            <li><span class="swatch dot hollow"></span>추가한 사본</li>
+            <li><span class="swatch line dashed"></span>결정 경계</li>
+            <li><span class="swatch line faint"></span>원본 모델의 경계</li>
+            <li><span class="swatch area white"></span>class A로 예측하는 영역</li>
+            <li><span class="swatch area"></span>class B로 예측하는 영역</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <div class="control">
+            <span class="control-label" id="toy-method-label">방법</span>
+            <div class="method-row">
+              <div class="segmented" role="radiogroup" aria-labelledby="toy-method-label" id="toy-method">
+                <button type="button" role="radio" aria-checked="true" data-value="none">Original</button>
+                <button type="button" role="radio" aria-checked="false" data-value="bme">BME</button>
+                <button type="button" role="radio" aria-checked="false" data-value="bma">BMA</button>
+              </div>
+              <button type="button" class="icon-button" id="toy-replay" aria-label="애니메이션 다시 재생" title="애니메이션 다시 재생"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12-7.5z" fill="currentColor"/></svg></button>
+              <button type="button" class="icon-button" id="toy-resample" aria-label="새 표본 뽑기" title="새 표본 뽑기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5a7.5 7.5 0 1 0 7.2 5.4" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/><path d="M11.5 1.2v7.6l5.2-3.8z" fill="currentColor"/></svg></button>
+            </div>
+          </div>
+          <div class="slider-row">
+            <div class="control">
+              <label for="toy-alpha"><span>학습 데이터의 편향 강도 \(\alpha\)</span> <output id="toy-alpha-out">1.00</output></label>
+              <input type="range" id="toy-alpha" min="0" max="1" step="0.05" value="1">
+              <p class="hint">0: Class / Group Independent<br>1: Class / Group Dependent</p>
+            </div>
+            <div class="control" id="toy-strength-control" hidden>
+              <label for="toy-strength"><span>제거하는 양</span> <output id="toy-strength-out">100%</output></label>
+              <input type="range" id="toy-strength" min="0" max="1" step="0.05" value="1">
+              <p class="hint">100%: 편향 방향의 성분을 모두 제거</p>
+            </div>
+            <div class="control" id="toy-frac-control" hidden>
+              <label for="toy-frac"><span>추가하는 양</span> <output id="toy-frac-out">100%</output></label>
+              <input type="range" id="toy-frac" min="0" max="1" step="0.05" value="1">
+              <p class="hint">100%: 클래스와 그룹이 독립이 되는 최소한의 양</p>
+            </div>
+          </div>
+          <div class="readout" id="toy-readout" aria-live="polite"></div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Demo 2: real embeddings -->
+    <article class="demo" id="demo-bios">
+      <header class="demo-head">
+        <h3><span class="demo-no">Demo 2</span>Real embeddings</h3>
+        <p>Bias in Bios 실제 데이터 활용 데모</p>
+      </header>
+      <div class="demo-start" id="bios-start">
+        <button type="button" class="button primary" id="bios-load">데이터 불러와 학습 시작 (약 3 MB)</button>
+        <p class="hint">불러온 뒤 원본 모델을 한 번 학습한다. 계산은 모두 이 브라우저에서 이루어진다.</p>
+      </div>
+      <div class="demo-main" id="bios-main" hidden>
+        <div class="toolbar">
+          <div class="control">
+            <span class="control-label" id="bios-method-label">방법</span>
+            <div class="segmented" role="radiogroup" aria-labelledby="bios-method-label" id="bios-method">
+              <button type="button" role="radio" aria-checked="true" data-value="none">Original</button>
+              <button type="button" role="radio" aria-checked="false" data-value="bme">BME</button>
+              <button type="button" role="radio" aria-checked="false" data-value="bma">BMA</button>
+            </div>
+          </div>
+          <div class="control" id="bios-k-control" hidden>
+            <label for="bios-k"><span>제거하는 방향의 수 \(k\)</span> <output id="bios-k-out">7</output></label>
+            <input type="range" id="bios-k" min="0" max="7" step="1" value="7">
+          </div>
+          <div class="control" id="bios-retrain-control" hidden>
+            <label class="check"><input type="checkbox" id="bios-retrain" checked> 편집한 임베딩으로 모델 재학습</label>
+            <p class="hint">끄면 원본 모델을 그대로 두고 입력만 편집한다(모델 고정).</p>
+          </div>
+          <div class="control" id="bios-frac-control" hidden>
+            <label for="bios-frac"><span>추가하는 양</span> <output id="bios-frac-out">100%</output></label>
+            <input type="range" id="bios-frac" min="0" max="1" step="0.1" value="1">
+          </div>
+          <p class="status" id="bios-status" aria-live="polite"></p>
+        </div>
+
+        <div class="kpis" id="bios-kpis"></div>
+
+        <div class="demo-grid">
+          <figure class="chart-card">
+            <figcaption><strong>직업별 재현율</strong></figcaption>
+            <div id="bios-chart" class="chart"></div>
+            <ul class="legend" aria-label="범례">
+              <li><span class="swatch dot g0"></span>남성 약력</li>
+              <li><span class="swatch dot g1"></span>여성 약력</li>
+              <li><span class="swatch dot ghost"></span>원본 모델</li>
+            </ul>
+          </figure>
+          <figure class="chart-card">
+            <figcaption><strong>학습 데이터 구성</strong></figcaption>
+            <div id="bios-table" class="table-scroll"></div>
+          </figure>
+        </div>
+
+        <div class="examples">
+          <h4>예시 데이터</h4>
+          <div id="bios-examples" class="example-list"></div>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- Results -->
+<section class="section container" id="results" aria-labelledby="results-title">
+  <div class="section-head">
+    <p class="kicker">Results</p>
+    <h2 id="results-title">실험 결과</h2>
+  </div>
+
+  <h3>BME 결과</h3>
+  <figure class="figure live" id="fig2">
+    <div class="fig-legend" id="fig2-legend" aria-label="범례"></div>
+    <div class="fig-panels wide-middle">
+      <div class="fig-panel"><h4>(a) 재현율 격차</h4><div class="chart" id="fig2a"></div></div>
+      <div class="fig-panel"><h4>(b) 정확도와 재현율 격차</h4><div class="chart" id="fig2b"></div></div>
+      <div class="fig-panel"><h4>(c) 제거 편향 방향 수</h4><div class="chart" id="fig2c"></div></div>
+    </div>
+    <figcaption><strong>그림 2.</strong> Bias in Bios에서의 BME 결과 그래프. (a) 클래스와 그룹의 편향 강도 \(\alpha\)에 따른 보정 GAP 변화, (b) 전체 데이터에서 각 방법의 정확도 변화와 보정 GAP 변화, (c) 제거한 편향 방향의 수에 따른 보정 GAP 변화이다. 옅은 띠는 95% 구간이다.</figcaption>
+  </figure>
+  <figure class="table-figure">
+    <div class="table-scroll" id="table2"></div>
+    <figcaption><strong>표 2.</strong> Bias in Bios에서의 BME 결과 표. 표의 상단 부분은 임베딩 편집 기법들의 결과이며, 표의 하단 부분은 학습 데이터 교정 기법들의 결과이다. 추가량/N은 원본 데이터 수 대비 증강시킨 데이터 수 비율이다. 소수 그룹과 다수 그룹은 각 클래스에서의 해당 그룹 재현율을 평균한 값이다.</figcaption>
+  </figure>
+  <p class="finding">BME는 정확도 손실 <span data-v="bios.bme.acc_drop">0.7</span>%p로 재현율 격차를 <span data-v="bios.bme.gap_reduction">54</span>% 줄이며, 학습 데이터의 편향 강도가 달라져도 재현율 격차가 거의 변하지 않는다.</p>
+
+  <h3>BMA 결과</h3>
+  <figure class="figure live" id="fig3">
+    <div class="fig-legend" id="fig3-legend" aria-label="범례"></div>
+    <div class="fig-panels">
+      <div class="fig-panel"><h4>(a) 재현율 격차</h4><div class="chart" id="fig3a"></div></div>
+      <div class="fig-panel"><h4>(b) 정확도</h4><div class="chart" id="fig3b"></div></div>
+      <div class="fig-panel"><h4>(c) 증강 데이터 양</h4><div class="chart" id="fig3c"></div></div>
+    </div>
+    <figcaption><strong>그림 3.</strong> Bias in Bios에서의 BMA 결과 그래프. (a) 클래스와 그룹의 편향 강도 \(\alpha\)에 따른 보정 GAP 변화, (b) 클래스와 그룹의 편향 강도 \(\alpha\)에 따른 정확도 변화, (c) 추가한 데이터 대비 보정 GAP 변화이다. (b)의 경우 BME와 다르게 BMA는 추가하는 표본의 양이 목표 비율 \(q^*\)로 정해져 정확도와 보정 GAP이 한 점으로만 나타나기에 해당 방식의 표기를 사용한다.</figcaption>
+  </figure>
+  <p class="finding">BMA는 CDA의 <span data-v="bios.bma.added">0.224</span>배 분량의 데이터로 재현율 격차를 <span data-v="bios.bma.gap_reduction">54</span>% 줄이며, 이때 정확도 손실은 <span data-v="bios.bma.acc_drop">0.6</span>%p이다.</p>
+
+  <h3>한국 공공데이터에 대한 적용 결과</h3>
+  <p class="reading-text">위해위험 소비자상담 내역은 공정거래위원회가 공공데이터포털에 공개한 1372 센터의 상담 기록 <span data-v="hazard.n">104,552</span>건이다. 상담의 제목과 본문으로 품목 대분류 <span data-v="hazard.n_classes">15</span>종을 예측하며, 그룹은 판매방식(일반 판매, 비대면 판매)이다.</p>
+  <figure class="figure live" id="fig4">
+    <div class="fig-legend" id="fig4-legend" aria-label="범례"></div>
+    <div class="fig-panels wide-middle">
+      <div class="fig-panel"><h4>(a) 재현율 격차</h4><div class="chart" id="fig4a"></div></div>
+      <div class="fig-panel"><h4>(b) 정확도와 재현율 격차</h4><div class="chart" id="fig4b"></div></div>
+      <div class="fig-panel"><h4>(c) 품목별 재현율 차이</h4><div class="chart" id="fig4c"></div></div>
+    </div>
+    <figcaption><strong>그림 4.</strong> 위해위험 상담 데이터에서의 BME와 BMA 결과 그래프. (a) 클래스와 그룹의 편향 강도 \(\alpha\)에 따른 보정 GAP 변화, (b) 전체 데이터에서 각 방법의 정확도 변화와 보정 GAP 변화 (모든 방향을 제거한 BME는 범위 밖에 있으며 표 3에 있다), (c) 품목마다 비대면 판매 상담의 재현율에서 일반 판매 상담의 재현율을 뺀 값을 그 품목의 비대면 판매 비율에 따라 나타낸 것이다. 점 하나가 품목 하나이고 직선은 점들의 추세선이며, 값이 0보다 작을수록 그 품목에서 비대면 판매 상담이 더 자주 틀리게 예측된다.</figcaption>
+  </figure>
+  <figure class="table-figure">
+    <div class="table-scroll" id="table3"></div>
+    <figcaption><strong>표 3.</strong> 위해위험 소비자상담 내역 데이터 적용 결과. 표의 상단은 이진 그룹의 경우이며, 표의 하단은 다중 그룹인 경우의 결과이다.</figcaption>
+  </figure>
+  <p class="finding">한국 공공데이터에서도 BME는 재현율 격차를 <span data-v="hazard.bme.gap_reduction">29</span>%, BMA는 <span data-v="hazard.bma.gap_reduction">12</span>% 줄였으며, 그룹이 셋인 경우에도 같은 방식으로 적용되었다.</p>
+</section>
+
+<!-- Code -->
+<section class="band" id="code" aria-labelledby="code-title">
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">Code</p>
+      <h2 id="code-title">코드</h2>
+    </div>
+    <div class="code-card">
+      <div class="code-head"><span>Python</span><button type="button" class="button small" id="copy-code">복사</button></div>
+<pre id="quickstart"><code>import numpy as np
+import bias_matrix as bm
+
+<span class="c"># X: (n, d) embeddings, y: class labels, z: group labels</span>
+
+<span class="c"># BME (Algorithm 1): fit on the training embeddings, apply the same map to any embeddings</span>
+eraser = bm.bme(X_train, y_train, z_train)            <span class="c"># all directions of B, oblique edit</span>
+X_train_edit, X_test_edit = eraser(X_train), eraser(X_test)
+
+<span class="c"># number of directions by the sequential permutation test</span>
+k, s, threshold = bm.select_rank(X_train, y_train, z_train)
+eraser_k = bm.bme(X_train, y_train, z_train, k=k)
+
+<span class="c"># BMA (Algorithm 2): mean-shift copies to append to the training set</span>
+X_new, y_new, z_new = bm.bma(X_train, y_train, z_train, rng=0)
+X_aug = np.concatenate([X_train, X_new])
+y_aug = np.concatenate([y_train, y_new])</code></pre>
+    </div>
+    <p class="code-foot">자세한 내용은 <a class="text-link" href="https://github.com/delta9043/Bias_matrix#readme" rel="noopener">README</a> 참고</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <p class="footer-brand">Bias-Matrix Editing and Augmentation</p>
+      <p>Sanghyeok Moon<br>Department of Applied Mathematics, Kyung Hee University</p>
+    </div>
+    <div class="footer-notes">
+      <p><strong>데이터와 모델</strong> Bias in Bios (De-Arteaga et al., 2019), 공정거래위원회 위해위험 소비자상담 내역 (공공데이터포털), Qwen3-0.6B.</p>
+      <p><strong>기타</strong> 주제와 아이디어는 저자가 제안하였다. 그 외 선행연구 조사, 코드 작성 및 실험, 논문 작성은 Anthropic사의 Claude Fable 5.2의 도움을 받았으며, 이 페이지와 데모도 같은 도구의 도움을 받아 만들었다.</p>
+    </div>
+    <a class="back-top" href="#top">맨 위로 ↑</a>
+  </div>
+</footer>
+
+<div class="tooltip" id="tooltip" role="tooltip" hidden></div>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<script defer src="assets/page-data.js?v=42023"></script>
+<script defer src="assets/bm-core.js?v=42023"></script>
+<script defer src="assets/app.js?v=42023"></script>
+<script defer src="assets/charts.js?v=42023"></script>
+<script defer src="assets/figures.js?v=42023"></script>
+<script defer src="assets/method-anim.js?v=42023"></script>
+<script defer src="assets/demo-toy.js?v=42023"></script>
+<script defer src="assets/demo-bios.js?v=42023"></script>
+</body>
+</html>

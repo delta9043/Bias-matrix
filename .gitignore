@@ -1,0 +1,8 @@
+# Environments, caches
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Data, embeddings, model cache (downloaded or extracted locally; repository root only)
+/data/

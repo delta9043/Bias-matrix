@@ -1,0 +1,30 @@
+{
+ "layer": 28,
+ "l2": 0.001,
+ "n_train": 83641,
+ "n_test": 20911,
+ "n_classes": 15,
+ "rare_share": 0.1,
+ "n_rare": 407,
+ "n_rare_other": 6190,
+ "rows": [
+  {
+   "method": "none",
+   "acc": 0.8627994835254172,
+   "recall_rare": 0.6633906633906634,
+   "recall_rare_other": 0.8972536348949919
+  },
+  {
+   "method": "bme",
+   "acc": 0.8391277318157907,
+   "recall_rare": 0.7248157248157249,
+   "recall_rare_other": 0.8715670436187399
+  },
+  {
+   "method": "bma",
+   "acc": 0.8589737458753766,
+   "recall_rare": 0.7223587223587223,
+   "recall_rare_other": 0.8959612277867528
+  }
+ ]
+}
